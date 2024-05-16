@@ -23,19 +23,22 @@ on:
 
 jobs:
   push-to-registry:
-    uses: tavanuka/push-to-registry@v1
-    with:
-      password: ${{ secrets.GITHUB_TOKEN }}
-      publish: ${{ github.event.inputs.push_to_registry == 'true' }}
-      registry: ghcr.io
-      ref: ${{ github.event.inputs.version == '' && github.ref || format('refs/tags/{0}', github.event.inputs.version)  }}
-      flavor: |
-        latest=auto
-      tags: |
-        type=ref,event=tag,priority=1000
-        type=raw,value=latest,priority=600,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
-      annotations: |
-        org.opencontainers.image.description=This is a test description
+    runs-on: ubuntu-latest
+    name: "Push image to registry"
+    steps:
+      - uses: tavanuka/push-to-registry@v1.0.0
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+          publish: ${{ github.event.inputs.push_to_registry == 'true' }}
+          registry: ghcr.io
+          ref: ${{ github.event.inputs.version == '' && github.ref || format('refs/tags/{0}', github.event.inputs.version)  }}
+          flavor: |
+            latest=auto
+          tags: |
+            type=ref,event=tag,priority=1000
+            type=raw,value=latest,priority=600,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+          annotations: |
+            org.opencontainers.image.description=This is a test description
 ```
 
 ### Inputs
