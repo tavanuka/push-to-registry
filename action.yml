@@ -7,10 +7,6 @@ branding:
   icon: upload-cloud
   color: blue
 
-outputs:
-  image_tag:
-    description: The tag of the image to be deployed.
-    value: ${{ steps.push-to-registry.outputs.image_tag }}
 inputs:
   username:
     description: The username of the container registry account. Default to repository owner.
@@ -45,6 +41,10 @@ inputs:
   annotations:
     description: list of custom annotations.
     required: false
+outputs:
+  image_tag:
+    description: The tag of the image to be deployed.
+    value: ${{ steps.tag.outputs.image_tag }}
 
 runs:
   using: 'composite'
